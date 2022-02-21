@@ -25,10 +25,10 @@
     "@babel/runtime": "7.17.0",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
-    "@mui/icons-material": "5.3.1",
+    "@mui/icons-material": "5.4.2",
     "@mui/lab": "5.0.0-alpha.59",
     "@mui/material": "5.3.1",
-    "@mui/styles": "5.3.0",
+    "@mui/styles": "5.4.2",
     "@mui/x-data-grid": "5.5.0",
     "bowser": "2.11.0",
     "classnames": "2.3.1",
@@ -97,7 +97,7 @@
     "redux": "4.1.1",
     "redux-devtools-extension": "2.13.9",
     "style-loader": "3.3.0",
-    "webpack": "5.68.0",
+    "webpack": "5.69.0",
     "webpack-cli": "4.9.1",
     "webpack-dev-server": "4.7.3"
   }
