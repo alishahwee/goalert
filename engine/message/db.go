@@ -840,18 +840,11 @@ func (db *DB) sendMessagesByType(ctx context.Context, cLock *processinglock.Conn
 }
 
 func (db *DB) sendMessage(ctx context.Context, cLock *processinglock.Conn, send SendFunc, m *Message) (bool, error) {
-	ctx, sp := trace.StartSpan(ctx, "Engine.MessageManager.SendMessage")
-	defer sp.End()
 	ctx = log.WithFields(ctx, log.Fields{
 		"DestTypeID": m.Dest.ID,
 		"DestType":   m.Dest.Type.String(),
 		"CallbackID": m.ID,
 	})
-	sp.AddAttributes(
-		trace.StringAttribute("message.dest.id", m.Dest.ID),
-		trace.StringAttribute("message.dest.type", m.Dest.Type.String()),
-		trace.StringAttribute("message.callback.id", m.ID),
-	)
 	if m.AlertID != 0 {
 		ctx = log.WithField(ctx, "AlertID", m.AlertID)
 	}

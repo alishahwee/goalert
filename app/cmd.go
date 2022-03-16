@@ -33,7 +33,6 @@ import (
 	"github.com/target/goalert/validation"
 	"github.com/target/goalert/version"
 	"github.com/target/goalert/web"
-	"go.opencensus.io/trace"
 	"golang.org/x/term"
 )
 
@@ -197,19 +196,13 @@ func handleShutdown(ctx context.Context, fn func(ctx context.Context) error) {
 	log.Logf(ctx, "Application attempting graceful shutdown.")
 	sCtx, cancel := context.WithTimeout(ctx, shutdownTimeout)
 	defer cancel()
-	sCtx, sp := trace.StartSpan(sCtx, "Shutdown")
-	defer sp.End()
 	go func() {
 		<-shutdownSignalCh
 		log.Logf(ctx, "Second signal received, terminating immediately")
-		sp.Annotate([]trace.Attribute{trace.BoolAttribute("shutdown.force", true)}, "Second signal received.")
 		cancel()
 	}()
 
-	err := fn(sCtx)
-	if err != nil {
-		sp.Annotate([]trace.Attribute{trace.BoolAttribute("error", true)}, err.Error())
-	}
+	fn(sCtx)
 }
 
 var (

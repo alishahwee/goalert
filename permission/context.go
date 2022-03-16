@@ -3,10 +3,11 @@ package permission
 import (
 	"context"
 	"errors"
-	"github.com/target/goalert/util/log"
 	"regexp"
 	"strings"
 	"sync/atomic"
+
+	"github.com/target/goalert/util/log"
 
 	"go.opencensus.io/trace"
 )
@@ -178,9 +179,7 @@ func SudoContext(ctx context.Context, f func(context.Context)) {
 	if cname != "" {
 		name += "[" + cname + "]"
 	}
-	sCtx, span := trace.StartSpan(ctx, "Auth.Sudo")
-	defer span.End()
-	sCtx, cancel := context.WithCancel(SystemContext(sCtx, name))
+	sCtx, cancel := context.WithCancel(SystemContext(ctx, name))
 	defer cancel()
 	f(sCtx)
 }

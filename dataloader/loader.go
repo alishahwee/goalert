@@ -4,8 +4,6 @@ import (
 	"context"
 	"sync"
 	"time"
-
-	"go.opencensus.io/trace"
 )
 
 type loaderConfig struct {
@@ -80,8 +78,7 @@ func (l *loader) load(entries []*loaderEntry) []*loaderEntry {
 	copy(cpy, entries)
 
 	go func() {
-		ctx, sp := trace.StartSpan(l.ctx, "Loader.Fetch/"+l.cfg.Name)
-		defer sp.End()
+		ctx := l.ctx
 
 		// Map the entries out by ID, and collect the list of IDs
 		// for the DB call.

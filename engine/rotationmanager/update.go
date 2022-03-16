@@ -12,7 +12,6 @@ import (
 	"github.com/target/goalert/validation/validate"
 
 	"github.com/pkg/errors"
-	"go.opencensus.io/trace"
 )
 
 // UpdateAll will update and cleanup the rotation state for all rotations.
@@ -97,8 +96,6 @@ func (db *DB) calcAdvances(ctx context.Context, tx *sql.Tx, all bool, rotID *str
 	var loc *time.Location
 	var needsAdvance []advance
 
-	_, sp := trace.StartSpan(ctx, "Engine.RotationManager.ScanRows")
-	defer sp.End()
 	for rows.Next() {
 		err = rows.Scan(
 			&rot.ID,

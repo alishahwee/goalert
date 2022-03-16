@@ -268,8 +268,7 @@ func (h *Handler) IdentityProviderHandler(id string) http.HandlerFunc {
 	}
 
 	return func(w http.ResponseWriter, req *http.Request) {
-		ctx, sp := trace.StartSpan(req.Context(), "Auth.Provider/"+id)
-		defer sp.End()
+		ctx := req.Context()
 
 		req = req.WithContext(ctx)
 
@@ -298,7 +297,6 @@ func (h *Handler) IdentityProviderHandler(id string) http.HandlerFunc {
 		if !info.Enabled {
 			err := Error(info.Title + " auth disabled")
 			q := refU.Query()
-			sp.Annotate([]trace.Attribute{trace.BoolAttribute("error", true)}, "error: "+err.Error())
 			q.Set("login_error", err.Error())
 			refU.RawQuery = q.Encode()
 			http.Redirect(w, req, refU.String(), http.StatusFound)

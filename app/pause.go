@@ -6,8 +6,6 @@ import (
 
 	"github.com/target/goalert/switchover"
 	"github.com/target/goalert/util/log"
-
-	"go.opencensus.io/trace"
 )
 
 func (app *App) pauseHandler(next http.Handler) http.Handler {
@@ -28,8 +26,6 @@ func (app *App) LogBackgroundContext() context.Context { return app.cfg.Logger.B
 
 func (app *App) Pause(ctx context.Context) error {
 	ctx = log.WithLogger(ctx, app.cfg.Logger)
-	ctx, sp := trace.StartSpan(ctx, "App.Pause")
-	defer sp.End()
 
 	err := app.mgr.Pause(ctx)
 	if err != nil {
